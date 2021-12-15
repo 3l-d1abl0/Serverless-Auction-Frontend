@@ -1,0 +1,18 @@
+<div class="navbar">
+    <div class="header">
+        <h1 style="font-size: 14px; color: white;">
+            THE AUCTION HOUSE
+        </h1>
+    </div>
+    <div class="loginLogoutContainer">
+        <% if(locals.user){ %>
+            <span>Hi, <%= locals.user.nickname %></span>
+        <%} %>
+        <button class="loginLogout-button" tabindex="0" type="button">
+            <span class="loginLogout-label">
+                Sign in
+            </span>
+            <span class="loginLogout-root"></span>
+        </button>
+    </div>
+</div>
