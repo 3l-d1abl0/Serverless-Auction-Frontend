@@ -4,8 +4,9 @@
         <meta charset="utf-8">
         <title><%= title %></title>
         <link rel='stylesheet' href='/stylesheets/style.css' />
-        <link rel='stylesheet' href='/stylesheets/auctions.css' />
-        
+        <link rel='stylesheet' href='/stylesheets/auctions.css?v=111' />
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
         <style>
             body {
                 margin: 0px;
@@ -17,189 +18,87 @@
             <%- include('partials/navbar') %>
         </header>
         <div class="container">
-            
+            <!-- <code><%= JSON.stringify(locals) %></code> -->
             <div class="auctionsContainer">
+                <% if(auctionData.length == 0 ){ %>
+                    <span>No New Auctions Yet !</span>
+                <%} else{ %>
 
-                <div class="auctionsCard">
+                    <% auctionData.forEach(function (item, index) { %>
 
-                    <div class="auctionsCardWrapper">
+                        <div class="auctionsCard">
 
-                        <button class="auctionCardHeader">
+                            <div class="auctionsCardWrapper">
 
-                            <div class="auctionCardHead">
-                                <div class="auctionCardHead-avatar">
-                                    <div class="auctionCardHead-avatar-image">S</div>
-                                </div>
-                                <div class="auctionCardHead-content">
-                                    <span class="auctionCardHead-avatar-name">Woot New</span>
-                                </div>
-                            </div>
+                                <button class="auctionCardHeader">
 
-                            <div class="auctionCardBody">
-                            </div>
-
-                            <div class="auctionCardFoot">
-                                <div class="auctionCardFoot-details">
-                                    <div>
-                                        <span class="auctionCardFoot-details-header">
-                                            No bids
-                                        </span>
-                                        <p class="auctionCardFoot-details-data">
-                                            HIGHEST BID
-                                        </p>
+                                    <div class="auctionCardHead">
+                                        <div class="auctionCardHead-avatar">
+                                            <div class="auctionCardHead-avatar-image">
+                                                <%= item.seller[0].toUpperCase() %>
+                                            </div>
+                                        </div>
+                                        <div class="auctionCardHead-content">
+                                            <span class="auctionCardHead-avatar-name">
+                                                <%= item.title %>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="auctionCardFoot-details">
-                                    <div>
-                                        <span class="auctionCardFoot-details-header">
-                                            0 hours 2 mins 23 secs
-                                        </span>
-                                        <p class="auctionCardFoot-details-data">
-                                            TIME REMAINING
-                                        </p>
+
+                                    <div class="auctionCardBody">
                                     </div>
-                                </div>
-                            </div>
 
-                        </button>
+                                    <div class="auctionCardFoot">
+                                        <div class="auctionCardFoot-details">
+                                            <div>
+                                                <span class="auctionCardFoot-details-header">
+                                                    No bids
+                                                </span>
+                                                <p class="auctionCardFoot-details-data">
+                                                    HIGHEST BID
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="auctionCardFoot-details">
+                                            <div>
+                                                <span class="auctionCardFoot-details-header" data-endingAt="<%= item.endingAt %>" >
+                                                    0 hours 2 mins 23 secs
+                                                </span>
+                                                <p class="auctionCardFoot-details-data">
+                                                    TIME REMAINING
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        <div class="auctionCardFooter">
-
-                            <div class="auctionCardFooter-card">
-
-                                <button class="auctionCardFooter-button">
-                                    <span class="auctionCardFooter-label">Your Auction</span>
                                 </button>
 
+                                <div class="auctionCardFooter">
+
+                                    <div class="auctionCardFooter-card">
+
+                                        <% if(item.seller == locals.user._json.email){ %>
+                                            <button class="auctionCardFooter-button">
+                                                <span class="auctionCardFooter-label">Your Auction</span>
+                                            </button>
+                                        <% }else{ %>
+                                            <button class="auctionCardFooter-button-bid">
+                                                <span class="auctionCardFooter-label">BID NOW !</span>
+                                            </button>
+                                        <% } %>
+
+                                    </div>
+                                        
+
+                                </div>
+
                             </div>
-                                
 
                         </div>
 
-                    </div>
+                    <%  }); %>
 
-                </div>
-
-                <div class="auctionsCard">
-
-                    <div class="auctionsCardWrapper">
-
-                        <button class="auctionCardHeader">
-
-                            <div class="auctionCardHead">
-                                <div class="auctionCardHead-avatar">
-                                    <div class="auctionCardHead-avatar-image">S</div>
-                                </div>
-                                <div class="auctionCardHead-content">
-                                    <span class="auctionCardHead-avatar-name">Woot New</span>
-                                </div>
-                            </div>
-
-                            <div class="auctionCardBody">
-                            </div>
-
-                            <div class="auctionCardFoot">
-                                <div class="auctionCardFoot-details">
-                                    <div>
-                                        <span class="auctionCardFoot-details-header">
-                                            No bids
-                                        </span>
-                                        <p class="auctionCardFoot-details-data">
-                                            HIGHEST BID
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="auctionCardFoot-details">
-                                    <div>
-                                        <span class="auctionCardFoot-details-header">
-                                            0 hours 2 mins 23 secs
-                                        </span>
-                                        <p class="auctionCardFoot-details-data">
-                                            TIME REMAINING
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </button>
-
-                        <div class="auctionCardFooter">
-
-                            <div class="auctionCardFooter-card">
-
-                                <button class="auctionCardFooter-button">
-                                    <span class="auctionCardFooter-label">Your Auction</span>
-                                </button>
-
-                            </div>
-                                
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="auctionsCard">
-
-                    <div class="auctionsCardWrapper">
-
-                        <button class="auctionCardHeader">
-
-                            <div class="auctionCardHead">
-                                <div class="auctionCardHead-avatar">
-                                    <div class="auctionCardHead-avatar-image">S</div>
-                                </div>
-                                <div class="auctionCardHead-content">
-                                    <span class="auctionCardHead-avatar-name">Woot New</span>
-                                </div>
-                            </div>
-
-                            <div class="auctionCardBody">
-                            </div>
-
-                            <div class="auctionCardFoot">
-                                <div class="auctionCardFoot-details">
-                                    <div>
-                                        <span class="auctionCardFoot-details-header">
-                                            No bids
-                                        </span>
-                                        <p class="auctionCardFoot-details-data">
-                                            HIGHEST BID
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="auctionCardFoot-details">
-                                    <div>
-                                        <span class="auctionCardFoot-details-header">
-                                            0 hours 2 mins 23 secs
-                                        </span>
-                                        <p class="auctionCardFoot-details-data">
-                                            TIME REMAINING
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </button>
-
-                        <div class="auctionCardFooter">
-
-                            <div class="auctionCardFooter-card">
-
-                                <button class="auctionCardFooter-button-bid">
-                                    <span class="auctionCardFooter-label">BID NOW !</span>
-                                </button>
-
-                            </div>
-                                
-
-                        </div>
-
-                    </div>
-
-                </div>
+                <% } %>
             </div>
 
 
@@ -207,4 +106,5 @@
             
         </div>
     </body>
+    <script src="/javascript/auctions.js"></script> 
     </html>
