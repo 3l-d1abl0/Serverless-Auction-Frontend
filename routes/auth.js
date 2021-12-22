@@ -18,9 +18,6 @@ router.get('/login', passport.authenticate('auth0', {
 });
 
 
-
-
-
 // Perform the final stage of authentication and redirect to previously requested URL or '/user'
 router.get('/callback', function (req, res, next) {
 
@@ -31,12 +28,19 @@ router.get('/callback', function (req, res, next) {
 
     req.login(user, function (err) {
       if (err) { return next(err); }
+      
       const returnTo = req.session.returnTo;
-    
       delete req.session.returnTo;
+
+      //setting the id token in session
+      req.session.id_token = info;
+
       res.redirect(returnTo || '/auctions');
     });
+
+
   })(req, res, next);
+
 });
 
 // Perform session logout and redirect to homepage
