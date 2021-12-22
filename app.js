@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 let userRouter = require('./routes/user');
 let authRouter = require('./routes/auth');
 let auctionsRouter = require('./routes/auctions');
+let auctionRouter = require('./routes/auction');
 
 let session = require('express-session');
 let userInViews = require('./lib/middleware/userInViews');
@@ -46,8 +47,8 @@ var strategy = new Auth0Strategy(
   function (accessToken, refreshToken, extraParams, profile, done) {
     // accessToken is the token to call Auth0 API (not needed in the most cases)
     // extraParams.id_token has the JSON Web Token
-    // profile has all the information from the user
-    return done(null, profile);
+    // profile has all the information from the user    
+    return done(null, profile, extraParams.id_token);
   }
 );
 
@@ -64,7 +65,7 @@ passport.deserializeUser(function (user, done) {
 
 // config express-session
 var sess = {
-  secret: '!@#$Somerandomsecret1234',
+  secret: process.env.AUTH0_APP_SESSION_SECRET,
   cookie: {},
   resave: false,
   saveUninitialized: true,
@@ -85,7 +86,8 @@ app.use('/', authRouter);
 app.use('/users', usersRouter);
 app.use('/', userRouter);
 
-app.use('/auctions', auctionsRouter)
+app.use('/auctions', auctionsRouter);
+app.use('/auction', auctionRouter)
 /**----ROUTES ------- */
 
 
