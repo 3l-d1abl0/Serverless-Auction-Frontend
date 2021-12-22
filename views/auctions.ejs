@@ -18,9 +18,11 @@
             <%- include('partials/navbar') %>
         </header>
         <div class="container">
-            <!-- <code><%= JSON.stringify(locals) %></code> -->
+            
             <div class="auctionsContainer">
-                <% if(auctionData.length == 0 ){ %>
+                <% if(error!== null){ %>
+                    <span> <%= error %> </span>
+                <% }else if(auctionData.length === 0 ){ %>
                     <span>No New Auctions Yet !</span>
                 <%} else{ %>
 
@@ -39,7 +41,7 @@
                                             </div>
                                         </div>
                                         <div class="auctionCardHead-content">
-                                            <span class="auctionCardHead-avatar-name">
+                                            <span class="auctionCardHead-avatar-name" data-auctionId="<%=item.id%>">
                                                 <%= item.title %>
                                             </span>
                                         </div>
@@ -51,8 +53,12 @@
                                     <div class="auctionCardFoot">
                                         <div class="auctionCardFoot-details">
                                             <div>
-                                                <span class="auctionCardFoot-details-header">
-                                                    No bids
+                                                <span class="auctionCardFoot-details-header" data-auctionId="<%=item.id%>">
+                                                    <% if(item.highestBid.amount == 0 ){ %>
+                                                        No bids
+                                                    <% }else{ %>
+                                                        <%= item.highestBid.amount; %>
+                                                     <% } %>
                                                 </span>
                                                 <p class="auctionCardFoot-details-data">
                                                     HIGHEST BID
@@ -62,7 +68,7 @@
                                         <div class="auctionCardFoot-details">
                                             <div>
                                                 <span class="auctionCardFoot-details-header" data-endingAt="<%= item.endingAt %>" >
-                                                    0 hours 2 mins 23 secs
+                                                    -- hours -- mins -- secs
                                                 </span>
                                                 <p class="auctionCardFoot-details-data">
                                                     TIME REMAINING
@@ -81,8 +87,12 @@
                                             <button class="auctionCardFooter-button">
                                                 <span class="auctionCardFooter-label">Your Auction</span>
                                             </button>
+                                        <% }else if (item.highestBid.bidder == locals.user._json.email){ %>
+                                            <button class="auctionCardFooter-button">
+                                                <span class="auctionCardFooter-label">You are the Highest Bidder !</span>
+                                            </button>
                                         <% }else{ %>
-                                            <button class="auctionCardFooter-button-bid">
+                                            <button class="auctionCardFooter-button-bid" data-auctionId="<%=item.id%>">
                                                 <span class="auctionCardFooter-label">BID NOW !</span>
                                             </button>
                                         <% } %>
@@ -101,9 +111,20 @@
                 <% } %>
             </div>
 
-
+            <div class="modal" style="display: none;">
+                    <h2>Bid on "Auction Name"</h2>
+                    <form autocomplete="off" class="form-element">
+                        <label class="form-label">Bid Amount</label>
+                        <div class="form-input-wrapper">
+                            <span>$</span>
+                            <input class="form-input" type="number" value="1"></input>
+                        </div>
+                    </form>
+                    <button class="confirm-button">Confirm</button>
+                    <div class="modal-message"> </div>
+            </div>
             
-            
+            <div class="backdrop" style="display: none;"></div>
         </div>
     </body>
     <script src="/javascript/auctions.js"></script> 
