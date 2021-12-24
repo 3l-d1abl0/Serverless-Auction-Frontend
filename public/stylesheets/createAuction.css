@@ -1,0 +1,81 @@
+.container{
+    --c-width: 50%;
+    --c-max-width: 500px;
+}
+
+.create-auction{
+    width: var(--c-width);
+    max-width: var(--c-max-width);
+    display: block;
+    margin: 10vh auto 0 auto;
+    padding: 25px;
+    background-color: #fff;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+
+}
+
+#auction-form label {
+    display: block;
+    padding: 12px 0 2px 0;
+    letter-spacing: -0.2px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  
+  #auction-form input,
+  #auction-form textarea {
+    font-size: 16px;
+    display: block;
+    width: 96%;
+    padding: 10px;
+    background-color: #ededed;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+  }
+  
+  #auction-form input:focus,
+  #auction-form textarea:focus {
+    border-bottom: 1px solid black;
+  }
+  
+  #auction-form input:focus:required:invalid {
+    background-color: #fff;
+  }
+  
+  #auction-form button {
+    display: block;
+    margin-top: 12px;
+    width: 100%;
+    padding: 6px 16px;
+    font-size: 0.875rem;
+    min-width: 64px;
+    box-sizing: border-box;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 500;
+    line-height: 1.75;
+    border-radius: 4px;
+    letter-spacing: 0.02857em;
+    text-transform: uppercase;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    padding: 5px 15px;
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(
+90deg, rgba(190,52,32,1) 0%, rgba(231,75,77,1) 48%, rgba(231,148,74,1) 100%);
+    border-width: 0;
+  }
+  
+  #auction-form button:hover {
+    background-color: var(--color-light-blue);
+  }
+
+  .create-auction-progress{
+    text-align: center;
+    display: block;
+    margin-top: 15px;
+    color: red;
+    display: none;
+  }

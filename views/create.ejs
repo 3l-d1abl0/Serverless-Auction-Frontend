@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <link rel='stylesheet' href='/stylesheets/createAuction.css' />
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+        <script src="/javascript/createAuction.js"></script> 
+        <style>
+            body {
+                margin: 0px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <%- include('partials/navbar') %>
+        </header>
+        <div class="container">
+
+            <div class="create-auction">
+
+                <form id="auction-form">
+                   
+                    <label for="nameInput">Title</label>
+                    <input type="text" id="nameInput" name="title" />
+            
+                    <label for="pictureInput">Picture</label>
+                    <input type="file" id="pictureInput" name="picture" accept="image/x-png, image/jpeg" />
+            
+                    <button type="submit">Create Auction</button>
+
+                </form>
+
+                <div class="create-auction-progress">
+                    
+                </div>
+            </div>
+
+        </div>
+    </body>
+    </html>
