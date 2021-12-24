@@ -10,6 +10,7 @@ let userRouter = require('./routes/user');
 let authRouter = require('./routes/auth');
 let auctionsRouter = require('./routes/auctions');
 let auctionRouter = require('./routes/auction');
+let createRouter = require('./routes/create');
 
 let session = require('express-session');
 let userInViews = require('./lib/middleware/userInViews');
@@ -23,8 +24,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({limit: '3mb'}));
+app.use(express.urlencoded({ limit: '3mb', extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -87,7 +88,8 @@ app.use('/users', usersRouter);
 app.use('/', userRouter);
 
 app.use('/auctions', auctionsRouter);
-app.use('/auction', auctionRouter)
+app.use('/auction', auctionRouter);
+app.use('/create', createRouter);
 /**----ROUTES ------- */
 
 
