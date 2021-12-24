@@ -47,7 +47,11 @@
                                         </div>
                                     </div>
 
-                                    <div class="auctionCardBody">
+                                    <% if(item.pictureUrl !== undefined){%>
+                                        <div class="auctionCardBody" style="background-image:url(<%=item.pictureUrl%>);">
+                                    <% } else{ %>
+                                        <div class="auctionCardBody">
+                                    <% } %>
                                     </div>
 
                                     <div class="auctionCardFoot">
