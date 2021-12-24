@@ -22,7 +22,6 @@ router.get('/', secured(), function (req, res, next) {
             redirect: 'follow'
         }).then((response) =>{
             logger.info(response.data);
-            //console.log(response.data);
             res.render('auctions', {
                 auctionData: response.data,
                 error: null,
@@ -31,9 +30,17 @@ router.get('/', secured(), function (req, res, next) {
 
         })
         .catch((err) => {
+
+            logger.error(err);
+
+            let errorText = '';
+            if(err.response !== undefined){
+                errorText = err.response.statusText;
+            }
+
             res.render('auctions', {
                 auctionData: [],
-                error: err.response.statusText +' Not able to fetch Data! Try again Later !',
+                error: errorText +' Not able to fetch Data! Try again Later !',
                 title: 'Auctions'
             });
         });
