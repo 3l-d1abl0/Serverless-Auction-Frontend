@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
     const fileInput = document.getElementById("pictureInput");
 
@@ -13,10 +13,10 @@ $(document).ready(function(){
         const inputKey = fileInput.getAttribute("name");
 
         var files = event.srcElement.files;
-        
+
         console.log(Object.entries(files));
 
-        const allowedExtensions =  ['jpg','png'], sizeLimit = 1_000_000; // 1 megabyte
+        const allowedExtensions = ['jpg', 'png'], sizeLimit = 1_000_000; // 1 megabyte
 
         const filePromises = Object.entries(files).map((item) => {
 
@@ -24,15 +24,15 @@ $(document).ready(function(){
 
                 const [index, file] = item;
 
-                const { name:fileName, size:fileSize } = file;
+                const { name: fileName, size: fileSize } = file;
 
                 const fileExtension = fileName.split(".").pop();
 
-                if(!allowedExtensions.includes(fileExtension)){
+                if (!allowedExtensions.includes(fileExtension)) {
                     reject(`${fileExtension} not allowed, only png and jpeg`);
-                  }else if(fileSize > sizeLimit){
+                } else if (fileSize > sizeLimit) {
                     reject(`file under ${sizeLimit} allowed !`);
-                  }
+                }
 
                 const reader = new FileReader();
                 reader.readAsBinaryString(file);
@@ -40,9 +40,8 @@ $(document).ready(function(){
                 reader.onload = function (event) {
                     // if it's multiple upload field then set the object key as picture[0], picture[1]
                     // otherwise just use picture
-                    const fileKey = `${inputKey}${
-                        files.length > 1 ? `[${index}]` : ""
-                    }`;
+                    const fileKey = `${inputKey}${files.length > 1 ? `[${index}]` : ""
+                        }`;
                     // Convert Base64 to data URI
                     // Assign it to your object
                     myFiles[fileKey] = `data:${file.type};base64,${btoa(
@@ -60,20 +59,20 @@ $(document).ready(function(){
         });
 
         Promise.all(filePromises)
-          .then(() => {
+            .then(() => {
 
-            messageBoard.text('Ready to Submit !');
-            messageBoard.show();
+                messageBoard.text('Ready to Submit !');
+                messageBoard.show();
 
-          })
-          .catch((error) => {
-            messageBoard.text(error);
-            messageBoard.show();
-          });
+            })
+            .catch((error) => {
+                messageBoard.text(error);
+                messageBoard.show();
+            });
     });
 
 
-    document.getElementById("auction-form").addEventListener("submit", function(event){
+    document.getElementById("auction-form").addEventListener("submit", function (event) {
 
         event.preventDefault();
 
@@ -84,36 +83,39 @@ $(document).ready(function(){
         }
 
         const formData = new FormData(document.getElementById("auction-form"));
-        let title = formData.get("title").trim(); 
+        let title = formData.get("title").trim();
 
-        if(title == ""){
+        if (title == "") {
             messageBoard.text('Please add a title for your Auction!');
             messageBoard.show();
             return;
         }
 
         let data = {
-          title: title,
-          picture: myFiles["picture"]
+            title: title,
+            picture: myFiles["picture"]
         };
 
         messageBoard.show();
 
-        $.ajax({ 
+        $.ajax({
             url: `/auction/`,
             type: 'POST',
             data: data,
-            beforeSend: function(){
+            beforeSend: function () {
                 messageBoard.text('Creating auction for you ... ');
             },
-            success: function(result) {
-                messageBoard.text(result.responseJSON.data);
+            success: function (result) {
+                messageBoard.text('Auction Created!');
+                setTimeout(function () {
+                    window.location.replace(window.location.origin + "/auctions");
+                }, 1000);
             },
-            error: function(error) {
+            error: function (error) {
                 messageBoard.text(error.responseJSON.data);
             }
         });
-        
+
     });
 
 
