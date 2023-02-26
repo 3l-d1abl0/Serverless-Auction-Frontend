@@ -1,67 +1,69 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
-    $(".backdrop").click(function(){
+    $(".backdrop").click(function () {
         console.log('clicked');
         $(".backdrop").hide();
         $(".modal").hide();
     });
 
-    function initializeClock(element, endingDate){
+    function initializeClock(element, endingDate) {
 
         function updateClock() {
 
             let deadline = new Date(endingDate) - new Date();
 
-            if ( deadline <= 0 || isNaN(deadline) ) {
+            if (deadline <= 0 || isNaN(deadline)) {
                 clearInterval(timeinterval);
+                $(element).text(`Auction Ended !`);
+                return;
             }
 
             const seconds = Math.floor((deadline / 1000) % 60);
-            const minutes = Math.floor((deadline / (1000 * 60) ) % 60);
+            const minutes = Math.floor((deadline / (1000 * 60)) % 60);
             const hours = Math.floor((deadline / (1000 * 60 * 60)));
 
             let text = `${hours} hrs ${minutes} min ${seconds} sec`;
             $(element).text(text);
 
         }
-        
+
         updateClock();
         var timeinterval = setInterval(updateClock, 1000);
- 
+
     }
-    
-    $('.auctionCardFoot-details-header').map(function(item, index){
+
+    $('.auctionCardFoot-details-header').map(function (item, index) {
         let endingDate = $(index).data("endingat");
-    
-        if( endingDate !== undefined){
+
+        if (endingDate !== undefined) {
             initializeClock(index, endingDate);
         }
     });
 
-    $('.auctionCardFooter-button-bid').click(function(){
+    $('.auctionCardFooter-button-bid').click(function () {
 
-         let auctionid = $(this).data("auctionid");
+        let auctionid = $(this).data("auctionid");
 
-         let auctionNameEle = $(".auctionCardHead-avatar-name").filter(function(index, item){
-            return $(item).data("auctionid")== auctionid;
-         });
+        let auctionNameEle = $(".auctionCardHead-avatar-name").filter(function (index, item) {
+            return $(item).data("auctionid") == auctionid;
+        });
 
-         let auctionPriceEle = $(".auctionCardFoot-details-header").filter(function(index, item){
-            return $(item).data("auctionid")== auctionid;
-         });
+        let auctionPriceEle = $(".auctionCardFoot-details-header").filter(function (index, item) {
+            return $(item).data("auctionid") == auctionid;
+        });
 
-         $(".modal h2").text( $(auctionNameEle).text() );
+        $(".modal h2").text($(auctionNameEle).text());
 
-         $(".modal .form-input-wrapper .form-input").val( parseInt($(auctionPriceEle).text().trim())+1 );
+        $(".modal .form-input-wrapper .form-input").val(parseInt($(auctionPriceEle).text().trim()) + 1);
 
-         $(".modal .form-input-wrapper .form-input").data("auctionid", auctionid);
+        $(".modal .form-input-wrapper .form-input").data("auctionid", auctionid);
 
-         $(".backdrop").show(); $(".modal").show();
+        $(".backdrop").show(); $(".modal").show();
 
     });
 
 
-    $('.confirm-button').click(function(){
+    $('.confirm-button').click(function () {
 
         let auctionId = $(".modal .form-input-wrapper .form-input").data("auctionid");
         let auctionBidPrice = $(".modal .form-input-wrapper .form-input").val();
@@ -69,21 +71,21 @@ $(document).ready(function() {
         let message = $('div.modal-message');
         message.text('');
 
-        $.ajax({ 
+        $.ajax({
             url: `/auction/${auctionId}/bid`,
             type: 'POST',
-            data: { auctionId: auctionId, auctionBidPrice : auctionBidPrice },
-            success: function(result) {
+            data: { auctionId: auctionId, auctionBidPrice: auctionBidPrice },
+            success: function (result) {
 
-                    message.text('PLACED !');
+                message.text('PLACED !');
 
-                   let targetEle = $('.auctionCardHead-avatar-name').filter(function(index, item){
-                        return $(item).data("auctionid") == auctionId;
-                   });
+                let targetEle = $('.auctionCardHead-avatar-name').filter(function (index, item) {
+                    return $(item).data("auctionid") == auctionId;
+                });
 
-                   let parentEle = targetEle.closest('.auctionsCardWrapper');
+                let parentEle = targetEle.closest('.auctionsCardWrapper');
 
-                   let newHtml = `<button class="auctionCardHeader">
+                let newHtml = `<button class="auctionCardHeader">
 
                    <div class="auctionCardHead">
                        <div class="auctionCardHead-avatar">
@@ -139,13 +141,13 @@ $(document).ready(function() {
 
                </div>`;
 
-               parentEle.html(newHtml);
-               initializeClock($('.auctionCardFoot-details-header.auction-timer'), result.data.endingAt);
+                parentEle.html(newHtml);
+                initializeClock($('.auctionCardFoot-details-header.auction-timer'), result.data.endingAt);
 
-               $(".backdrop").hide(); $(".modal").hide();
+                $(".backdrop").hide(); $(".modal").hide();
 
             },
-            error: function(error) {
+            error: function (error) {
                 message.text(error.responseJSON.data);
             }
         });
